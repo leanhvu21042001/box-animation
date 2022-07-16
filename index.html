@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Box Animation</title>
+    <style>
+      *,
+      *::after,
+      *::before {
+        padding: 0;
+        margin: 0;
+        box-sizing: border-box;
+      }
+      :root {
+        --wh-p: 300px;
+        --perspective-800: 800px;
+        --perspective-600: 600px;
+      }
+      html {
+        font-size: 120%;
+        color: #fff;
+      }
+      body {
+        width: 100%;
+        height: 100%;
+      }
+      .wh {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        height: var(--wh-p);
+        width: var(--wh-p);
+      }
+      .container {
+        width: 900px;
+        margin: 0 auto;
+      }
+      /* chia layout thuận tiện để css */
+      .wrap_plane {
+        display: grid;
+        grid-template-columns: repeat(3, var(--wh-p));
+        grid-template-rows: repeat(3, var(--wh-p));
+        perspective: var(--perspective-800);
+        font-size: 1.5rem;
+      }
+
+      /* cố định vị trí và tạo hình tàm giác */
+      .top {
+        grid-column: 2/3;
+        grid-row: 1/2;
+        transform: translateY(30%) rotate(45deg);
+      }
+      .right {
+        grid-column: 3/4;
+        grid-row: 2/3;
+        transform: translateX(-30%) rotate(45deg);
+      }
+      .bottom {
+        grid-column: 2/3;
+        grid-row: 3/4;
+        transform: translateY(-30%) rotate(45deg);
+      }
+      .left {
+        grid-column: 1/2;
+        grid-row: 2/3;
+        transform: translateX(30%) rotate(45deg);
+      }
+      /* cố định plane */
+      .plane {
+        grid-column: 2/3;
+        grid-row: 2/3;
+        position: relative;
+        transform-style: preserve-3d;
+        transition: 1s;
+        text-align: center;
+        letter-spacing: 0.1rem;
+      }
+      .zIndex-50 {
+        z-index: 50;
+      }
+
+      /* hide: ẩn các phần thừa của top, left, right, bottom xung quanh */
+      .top-hide {
+        grid-column: 1/ 4;
+        grid-row: 1/2;
+      }
+      .right-hide {
+        grid-column: 3/4;
+        grid-row: 1/4;
+      }
+      .bottom-hide {
+        grid-column: 1/4;
+        grid-row: 3/4;
+      }
+      .left-hide {
+        grid-column: 1/2;
+        grid-row: 1/4;
+      }
+      .zIndex-100 {
+        z-index: 100;
+      }
+
+      /* inside plane */
+      .plane::after {
+        content: "";
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        text-align: center;
+        border: 5px solid orange;
+      }
+      .plane *::first-letter {
+        font-size: 1.6rem;
+        font-weight: 600;
+        text-transform: uppercase;
+        color: rgb(0, 232, 240);
+      }
+      .plane
+        :is(.plane-front, .plane-top, .plane-right, .plane-bottom, .plane-left) {
+        position: absolute;
+      }
+
+      .plane-front {
+        background-color: black;
+        width: var(--wh-p);
+        height: var(--wh-p);
+      }
+
+      .plane-top,
+      .plane-bottom {
+        width: var(--wh-p);
+        height: calc(var(--wh-p) / 3);
+      }
+      .plane-top {
+        background-color: rgb(7, 97, 124);
+        transform: translateY(-150px) translateZ(-50px) rotateX(90deg);
+      }
+      .plane-bottom {
+        background-color: rgb(7, 97, 124);
+        transform: translateY(150px) translateZ(-50px) rotateX(-90deg);
+      }
+
+      .plane-left,
+      .plane-right {
+        width: calc(var(--wh-p) / 3);
+        height: var(--wh-p);
+      }
+      .plane-right {
+        background-color: rgb(7, 97, 124);
+        transform: translateX(150px) translateZ(-50px) rotateY(90deg);
+      }
+      .plane-left {
+        background-color: rgb(7, 97, 124);
+        transform: translateX(-150px) translateZ(-50px) rotateY(-90deg);
+      }
+
+      /* hover cho plane */
+      .top:hover + div + div + div + div.plane {
+        transform: rotateX(-55deg);
+      }
+      .right:hover + div + div + div.plane {
+        transform: rotateY(-55deg);
+      }
+      .bottom:hover + div + div.plane {
+        transform: rotateX(55deg);
+      }
+      .left:hover + div.plane {
+        transform: rotateY(55deg);
+      }
+    </style>
+  </head>
+
+  <body>
+    <div class="container">
+      <div class="wrap_plane">
+        <!-- control plane-->
+        <div class="top-hide zIndex-100"></div>
+        <div class="right-hide zIndex-100"></div>
+        <div class="bottom-hide zIndex-100"></div>
+        <div class="left-hide zIndex-100"></div>
+
+        <div class="wh top zIndex-50"></div>
+        <div class="wh right zIndex-50"></div>
+        <div class="wh bottom zIndex-50"></div>
+        <div class="wh left zIndex-50"></div>
+
+        <!-- plane -->
+        <div class="wh plane">
+          <div class="plane-front">front</div>
+          <div class="plane-top">top</div>
+          <div class="plane-right">right</div>
+          <div class="plane-bottom">bottom</div>
+          <div class="plane-left">left</div>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>
